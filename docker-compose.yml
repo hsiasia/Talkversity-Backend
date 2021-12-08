@@ -1,0 +1,29 @@
+version: '3'
+services:
+    db:
+      image: mysql
+      environment:
+          MYSQL_HOST: localhost
+          MYSQL_USER: mis_admin
+          MYSQL_PASSWORD: zfONtZXF0SP95cGL!
+          MYSQL_ROOT_PASSWORD: zfONtZXF0SP95cGL!
+          MYSQL_DATABASE: talkversity
+      ports:
+        - "3306:3306"
+        # (HOST:CONTAINER)
+      volumes:
+        - ./db:/docker-entrypoint-initdb.d/:ro
+
+    web:
+      build: .
+      command: python manage.py runserver 0.0.0.0:8000
+      restart: always
+      volumes:
+        - .:/docker_api
+        # (HOST:CONTAINER)
+      ports:
+        - "8000:8000"
+        # (HOST:CONTAINER)
+      depends_on:
+        - db
+
